@@ -24,7 +24,7 @@ else:
     st.warning('Please upload a .pkl file.')
 
 # Define the prediction function
-def player_rating(features):
+def player_rating(model, features):
     try:
         # Ensure features are in the correct format and shape
         input_data = np.array(features).reshape(1, -1)
@@ -65,6 +65,9 @@ for i in features:
     input_.append(value)
 
 if st.button('Predict Rating'):
-    rating = player_rating(input_)
-    if rating is not None:
-        st.write(f'Predicted Player Rating: {rating}')
+    if 'model' in globals():  # Check if model is loaded
+        rating = player_rating(model, input_)
+        if rating is not None:
+            st.write(f'Predicted Player Rating: {rating}')
+    else:
+        st.warning('Please upload and load a model first.')
