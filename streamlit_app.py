@@ -25,8 +25,16 @@ else:
 
 # Define the prediction function
 def player_rating(features):
-    prediction = model.predict(np.array(features).reshape(1, -1))
-    return prediction[0]
+    try:
+        # Ensure features are in the correct format and shape
+        input_data = np.array(features).reshape(1, -1)
+        
+        # Make prediction using the loaded model
+        prediction = model.predict(input_data)
+        return prediction[0]  # Assuming model.predict() returns a single prediction
+    except Exception as e:
+        st.error(f"Prediction error: {e}")
+        return None
 
 # Input features from user
 features = [ 'potential',  'mentality_vision','value_eur', 
@@ -58,4 +66,5 @@ for i in features:
 
 if st.button('Predict Rating'):
     rating = player_rating(input_)
-    st.write(f'Predicted Player Rating: {rating}')
+    if rating is not None:
+        st.write(f'Predicted Player Rating: {rating}')
