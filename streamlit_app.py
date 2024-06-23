@@ -7,6 +7,9 @@ import pickle as pkl
 import streamlit as st
 import pickle
 
+import streamlit as st
+import pickle
+
 # Create the file uploader widget
 uploaded_file = st.file_uploader("DecisionTreeRegressor.pkl", type="pkl")
 
@@ -16,6 +19,15 @@ if uploaded_file is not None:
         # Load the model from the uploaded file
         model = pickle.load(uploaded_file)
         st.success("Model loaded successfully!")
+        
+        # Optionally, display some information about the model
+        st.write("Model details:")
+        st.write(model)
+    except pickle.UnpicklingError:
+        st.error("Error in unpickling the file. The file might be corrupted.")
+    except Exception as e:
+        st.error(f"An unexpected error occurred: {e}")
+
         
     
 
