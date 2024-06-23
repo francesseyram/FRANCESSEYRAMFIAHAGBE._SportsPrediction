@@ -1,7 +1,7 @@
 import streamlit as st
 import numpy as np
 import pickle
-from sklearn.base import BaseEstimator  # Importing BaseEstimator for type hinting
+from sklearn.ensemble import RandomForestRegressor  # Example import from scikit-learn
 
 # Streamlit app interface
 st.title('Player Rating Predictor')
@@ -14,17 +14,10 @@ if uploaded_file is not None:
     try:
         # Load the model from the uploaded file
         model = pickle.load(uploaded_file)
-        
-        # Check if the loaded model is a scikit-learn estimator
-        if not isinstance(model, BaseEstimator):
-            raise TypeError("Uploaded model is not a valid scikit-learn estimator.")
-            
         st.success("Model loaded successfully!")
         
     except pickle.UnpicklingError:
         st.error("Error in unpickling the file. The file might be corrupted.")
-    except TypeError as e:
-        st.error(f"Invalid model type: {e}")
     except Exception as e:
         st.error(f"An unexpected error occurred: {e}")
 else:
@@ -72,9 +65,9 @@ for i in features:
     input_.append(value)
 
 if st.button('Predict Rating'):
-    if 'model' in globals() and isinstance(model, BaseEstimator):  # Check if model is loaded and valid
+    if 'model' in globals() and isinstance(model, RandomForestRegressor):  # Check if model is loaded and valid
         rating = player_rating(model, input_)
         if rating is not None:
             st.write(f'Predicted Player Rating: {rating}')
     else:
-        st.warning('Please upload and load a valid scikit-learn model first.')
+        st.warning('Please upload and load a valid RandomForestRegressor model first.')
