@@ -4,9 +4,11 @@ import pandas as pd
 import numpy as np
 import pickle as pkl
 
-# Load the trained model
-with open("RandomForestRegressor.pkl", 'rb') as file:
-    model = pkl.load(file)
+
+
+with open(r"C:\Users\franc\Desktop\Intro to AI\RandomForestRegressor.pkl", 'rb') as file:
+    model = pickle.load(file)
+
 
 # Define the prediction function
 def player_rating(features):
