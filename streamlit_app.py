@@ -12,8 +12,7 @@ uploaded_file = st.file_uploader("Upload DecisionTreeRegressor.pkl", type="pkl")
 if uploaded_file is not None:
     try:
         # Load the model from the uploaded file
-        with open(uploaded_file, 'rb') as file:
-            model = pickle.load(file)
+        model = pickle.load(uploaded_file)
         st.success("Model loaded successfully!")
         
     except pickle.UnpicklingError:
