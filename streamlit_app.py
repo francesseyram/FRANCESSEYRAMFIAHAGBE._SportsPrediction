@@ -4,6 +4,20 @@ import pandas as pd
 import numpy as np
 import pickle as pkl
 
+import streamlit as st
+import pickle
+
+# Create the file uploader widget
+uploaded_file = st.file_uploader("DecisionTreeRegressor.pkl", type="pkl")
+
+# Check if a file has been uploaded
+if uploaded_file is not None:
+    try:
+        # Load the model from the uploaded file
+        model = pickle.load(uploaded_file)
+        st.success("Model loaded successfully!")
+        
+    
 
 
 with open("DecisionTreeRegressor.pkl", 'rb') as file:
