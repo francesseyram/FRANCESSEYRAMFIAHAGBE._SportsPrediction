@@ -1,7 +1,6 @@
 import streamlit as st
 import numpy as np
 import pickle
-from sklearn.ensemble import RandomForestRegressor  # Example import from scikit-learn
 
 # Streamlit app interface
 st.title('Player Rating Predictor')
@@ -65,9 +64,9 @@ for i in features:
     input_.append(value)
 
 if st.button('Predict Rating'):
-    if 'model' in globals() and isinstance(model, RandomForestRegressor):  # Check if model is loaded and valid
+    if 'model' in globals():  # Check if model is loaded
         rating = player_rating(model, input_)
         if rating is not None:
             st.write(f'Predicted Player Rating: {rating}')
     else:
-        st.warning('Please upload and load a valid RandomForestRegressor model first.')
+        st.warning('Please upload and load a model first.')
