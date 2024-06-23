@@ -1,48 +1,32 @@
-#Importing libraries
 import streamlit as st
-import pandas as pd
 import numpy as np
-import pickle as pkl
-
-import streamlit as st
 import pickle
 
-import streamlit as st
-import pickle
+# Streamlit app interface
+st.title('Player Rating Predictor')
 
 # Create the file uploader widget
-uploaded_file = st.file_uploader("DecisionTreeRegressor.pkl", type="pkl")
+uploaded_file = st.file_uploader("Upload DecisionTreeRegressor.pkl", type="pkl")
 
 # Check if a file has been uploaded
 if uploaded_file is not None:
     try:
         # Load the model from the uploaded file
-        model = pickle.load(uploaded_file)
+        with open(uploaded_file, 'rb') as file:
+            model = pickle.load(file)
         st.success("Model loaded successfully!")
         
-        # Optionally, display some information about the model
-        st.write("Model details:")
-        st.write(model)
     except pickle.UnpicklingError:
         st.error("Error in unpickling the file. The file might be corrupted.")
     except Exception as e:
         st.error(f"An unexpected error occurred: {e}")
-
-        
-    
-
-
-with open("DecisionTreeRegressor.pkl", 'rb') as file:
-    model = pickle.load(file)
-
+else:
+    st.warning('Please upload a .pkl file.')
 
 # Define the prediction function
 def player_rating(features):
     prediction = model.predict(np.array(features).reshape(1, -1))
     return prediction[0]
-import streamlit as st
-# Streamlit app interface
-st.title('Player Rating ')
 
 # Input features from user
 features = [ 'potential',  'mentality_vision','value_eur', 
@@ -73,5 +57,5 @@ for i in features:
     input_.append(value)
 
 if st.button('Predict Rating'):
-    rating = player_rating(input_data)
+    rating = player_rating(input_)
     st.write(f'Predicted Player Rating: {rating}')
