@@ -1,6 +1,7 @@
 import streamlit as st
 import numpy as np
 import pickle
+from sklearn.tree import DecisionTreeRegressor  # Import DecisionTreeRegressor from scikit-learn
 
 # Streamlit app interface
 st.title('Player Rating Predictor')
@@ -12,11 +13,18 @@ uploaded_file = st.file_uploader("Upload DecisionTreeRegressor.pkl", type="pkl")
 if uploaded_file is not None:
     try:
         # Load the model from the uploaded file
-        model = pickle.load(uploaded_file)
+        model = pickle.load(uploaded_file, encoding='latin1')
+        
+        # Ensure the loaded model is of the correct type
+        if not isinstance(model, DecisionTreeRegressor):
+            raise TypeError("Uploaded model is not a DecisionTreeRegressor.")
+        
         st.success("Model loaded successfully!")
         
     except pickle.UnpicklingError:
         st.error("Error in unpickling the file. The file might be corrupted.")
+    except TypeError as e:
+        st.error(f"Invalid model type: {e}")
     except Exception as e:
         st.error(f"An unexpected error occurred: {e}")
 else:
@@ -57,16 +65,16 @@ features = [ 'potential',  'mentality_vision','value_eur',
     'cat_ldm', 'catcdm', 'catrdm', 'catrwb', 'catlb', 'cat_lcb', 
     'cat_cb', 'catrcb', 'catrb', 'cat_gk'
 ]
-input_ = []
+input_data = []
 
 for i in features:
     value = st.number_input(f'Enter {i}', value=0.0)
-    input_.append(value)
+    input_data.append(value)
 
 if st.button('Predict Rating'):
-    if 'model' in globals():  # Check if model is loaded
-        rating = player_rating(model, input_)
+    if 'model' in globals() and isinstance(model, DecisionTreeRegressor):  # Check if model is loaded and valid
+        rating = player_rating(model, input_data)
         if rating is not None:
             st.write(f'Predicted Player Rating: {rating}')
     else:
-        st.warning('Please upload and load a model first.')
+        st.warning('Please upload and load a valid DecisionTreeRegressor model first.')
