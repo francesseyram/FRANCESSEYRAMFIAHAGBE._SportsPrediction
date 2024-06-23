@@ -6,7 +6,7 @@ import pickle as pkl
 
 
 
-with open(r"C:\Users\franc\Desktop\Intro to AI\RandomForestRegressor.pkl", 'rb') as file:
+with open(r"C:\Users\franc\Desktop\Intro to AI\DecisionTreeRegressor.pkl", 'rb') as file:
     model = pickle.load(file)
 
 
